@@ -401,7 +401,7 @@
                 
                 // GitHub 原始文件 URL
                 this.githubBaseUrl = 'https://raw.githubusercontent.com';
-                this.repositoryPath = 'Ricky01-x/insurance/main'; // 需要更新
+                this.repositoryPath = 'Ricky01-x/insurance/main';
                 
                 this.init();
             }
@@ -647,10 +647,12 @@
                     resultsDiv.innerHTML = '<div class="search-result-item">找不到相關商品</div>';
                 } else {
                     resultsDiv.innerHTML = results.map(product => {
+                        const versionDisplay = this.formatVersionDate(product.basic_info.version_date);
                         const productCode = product.basic_info.product_code;
                         
                         return `<div class="search-result-item" data-product-code="${productCode}">
                             <strong>${product.basic_info.product_name}</strong>
+                            ${versionDisplay ? `<span class="product-version">(${versionDisplay})</span>` : ''}
                             <br>
                             <small>${product.basic_info.product_code} | ${product.basic_info.insurance_type}</small>
                         </div>`;
@@ -666,6 +668,108 @@
                 }
                 
                 this.showSearchResults();
+            }
+
+            // 新增：格式化版本日期的方法
+            formatVersionDate(versionDate) {
+                if (!versionDate) return null;
+                
+                // 處理民國年份格式
+                if (versionDate.includes('中華民國')) {
+                    const match = versionDate.match(/中華民國\s*(\d+)\s*年\s*(\d+)\s*月\s*(\d+)\s*日/);
+                    if (match) {
+                        const year = parseInt(match[1]);
+                        const month = match[2].padStart(2, '0');
+                        const day = match[3].padStart(2, '0');
+                        return `${year}/${month}/${day}`;
+                    }
+                }
+                
+                // 處理中文數字日期格式
+                if (versionDate.includes('年') && versionDate.includes('月') && versionDate.includes('日')) {
+                    // 使用更系統化的中文數字轉換
+                    const convertChineseNumber = (str) => {
+                        // 創建數字映射表
+                        const digits = {
+                            '零': 0, '〇': 0,
+                            '一': 1, '二': 2, '三': 3, '四': 4, '五': 5,
+                            '六': 6, '七': 7, '八': 8, '九': 9
+                        };
+                        
+                        const units = {
+                            '十': 10,
+                            '百': 100
+                        };
+                        
+                        // 處理特殊情況：「十」開頭的數字（如「十二」= 12）
+                        str = str.replace(/^十([一-九])/g, (match, digit) => {
+                            return (10 + digits[digit]).toString();
+                        });
+                        str = str.replace(/^十$/g, '10');
+                        
+                        // 處理一百xx格式
+                        str = str.replace(/一百([一-九]十[一-九])/g, (match, rest) => {
+                            // 先轉換後面的部分，如「一十三」-> 13
+                            const restConverted = convertChineseNumber(rest);
+                            return (100 + parseInt(restConverted)).toString();
+                        });
+                        
+                        str = str.replace(/一百([一-九]十)/g, (match, rest) => {
+                            // 處理「一十」-> 10, 「二十」-> 20 等
+                            const digit = digits[rest.charAt(0)];
+                            return (100 + digit * 10).toString();
+                        });
+                        
+                        str = str.replace(/一百([一-九])/g, (match, digit) => {
+                            return (100 + digits[digit]).toString();
+                        });
+                        
+                        str = str.replace(/一百/g, '100');
+                        
+                        // 處理二十到九十的數字
+                        for (let i = 2; i <= 9; i++) {
+                            const chineseDigit = Object.keys(digits).find(key => digits[key] === i);
+                            if (chineseDigit) {
+                                // 處理 X十Y 格式
+                                str = str.replace(new RegExp(`${chineseDigit}十([一-九])`, 'g'), (match, lastDigit) => {
+                                    return (i * 10 + digits[lastDigit]).toString();
+                                });
+                                // 處理 X十 格式
+                                str = str.replace(new RegExp(`${chineseDigit}十`, 'g'), (i * 10).toString());
+                            }
+                        }
+                        
+                        // 處理一十x格式（如一十二、一十三等）
+                        str = str.replace(/一十([一-九])/g, (match, digit) => {
+                            return (10 + digits[digit]).toString();
+                        });
+                        str = str.replace(/一十/g, '10');
+                        
+                        // 最後轉換單個數字
+                        Object.keys(digits).forEach(chinese => {
+                            str = str.replace(new RegExp(chinese, 'g'), digits[chinese].toString());
+                        });
+                        
+                        return str;
+                    };
+                    
+                    let processedDate = convertChineseNumber(versionDate);
+                    
+                    // 提取年月日
+                    const yearMatch = processedDate.match(/(\d+)年/);
+                    const monthMatch = processedDate.match(/(\d+)月/);
+                    const dayMatch = processedDate.match(/(\d+)日/);
+                    
+                    if (yearMatch && monthMatch && dayMatch) {
+                        const year = yearMatch[1];
+                        const month = monthMatch[1].padStart(2, '0');
+                        const day = dayMatch[1].padStart(2, '0');
+                        return `${year}/${month}/${day}`;
+                    }
+                }
+                
+                // 如果無法解析，返回原始日期的簡化版本
+                return versionDate.substring(0, 10);
             }
 
             showSearchResults() {
@@ -726,7 +830,11 @@
                 }
 
                 container.innerHTML = this.selectedPolicies.map((policy, index) => {
-                    const displayName = policy.basic_info.product_name;
+                    // 格式化版本日期顯示
+                    const versionDate = this.formatVersionDate(policy.basic_info.version_date);
+                    const displayName = versionDate ? 
+                        `${policy.basic_info.product_name} (${versionDate})` : 
+                        policy.basic_info.product_name;
                     
                     return `<div class="policy-item">
                         <div class="policy-header">
