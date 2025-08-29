@@ -1,0 +1,491 @@
+{
+  "event_001": {
+    "event_id": "event_001",
+    "event_name": "車禍導致大腿骨骨折",
+    "event_type": "意外傷害",
+    "category": "骨折",
+    "description": "因交通事故導致大腿骨（股骨）骨折，住院7天，手術治療，醫療費用5萬元",
+    "severity": "中度",
+    "frequency": "常見",
+    "medical_info": {
+      "icd_10_code": "S72.3",
+      "surgery_required": true,
+      "hospitalization_days": 7,
+      "icu_days": 0,
+      "medical_expenses": 50000
+    },
+    "triggers": [
+      {
+        "insurance_type": "意外傷害",
+        "benefit_name": "意外骨折保險金",
+        "trigger_condition": "骨折",
+        "body_part": "大腿骨",
+        "amount": 30000,
+        "calculation_note": "大腿骨骨折固定給付"
+      },
+      {
+        "insurance_type": "意外傷害",
+        "benefit_name": "意外傷害醫療保險金",
+        "trigger_condition": "意外醫療",
+        "actual_expense": 50000,
+        "calculation_note": "實支實付，上限視保額"
+      },
+      {
+        "insurance_type": "住院日額",
+        "benefit_name": "住院日額保險金",
+        "trigger_condition": "住院",
+        "days": 7,
+        "calculation_note": "日額 × 住院天數"
+      },
+      {
+        "insurance_type": "手術醫療",
+        "benefit_name": "住院手術保險金",
+        "trigger_condition": "手術",
+        "surgery_type": "骨折復位內固定術",
+        "multiplier": 3,
+        "calculation_note": "手術倍數表第3級"
+      }
+    ],
+    "exclusions": [],
+    "notes": "需有交通事故證明、診斷證明書"
+  },
+  
+  "event_002": {
+    "event_id": "event_002",
+    "event_name": "急性盲腸炎手術",
+    "event_type": "疾病住院",
+    "category": "一般手術",
+    "description": "急性闌尾炎（盲腸炎）住院手術，住院5天，腹腔鏡闌尾切除術",
+    "severity": "輕度",
+    "frequency": "常見",
+    "medical_info": {
+      "icd_10_code": "K35.8",
+      "surgery_required": true,
+      "hospitalization_days": 5,
+      "icu_days": 0,
+      "medical_expenses": 35000
+    },
+    "triggers": [
+      {
+        "insurance_type": "住院日額",
+        "benefit_name": "住院日額保險金",
+        "trigger_condition": "住院",
+        "days": 5,
+        "calculation_note": "日額 × 住院天數"
+      },
+      {
+        "insurance_type": "手術醫療",
+        "benefit_name": "住院手術保險金",
+        "trigger_condition": "手術",
+        "surgery_type": "闌尾切除術",
+        "multiplier": 2,
+        "calculation_note": "手術倍數表第2級"
+      },
+      {
+        "insurance_type": "實支實付",
+        "benefit_name": "住院醫療費用保險金",
+        "trigger_condition": "住院醫療",
+        "actual_expense": 35000,
+        "calculation_note": "實際醫療費用，上限視保額"
+      }
+    ],
+    "exclusions": [],
+    "notes": "非意外事故，意外險不理賠"
+  },
+  
+  "event_003": {
+    "event_id": "event_003",
+    "event_name": "肺癌第三期診斷及治療",
+    "event_type": "重大疾病",
+    "category": "癌症",
+    "description": "確診肺腺癌第三期，住院30天（含加護病房5天），手術切除並化療",
+    "severity": "重度",
+    "frequency": "中等",
+    "medical_info": {
+      "icd_10_code": "C78.0",
+      "surgery_required": true,
+      "hospitalization_days": 30,
+      "icu_days": 5,
+      "medical_expenses": 500000,
+      "chemotherapy": true
+    },
+    "triggers": [
+      {
+        "insurance_type": "癌症醫療",
+        "benefit_name": "癌症(重度)保險金",
+        "trigger_condition": "重度癌症",
+        "percentage": 100,
+        "calculation_note": "保額全額給付"
+      },
+      {
+        "insurance_type": "重大疾病險",
+        "benefit_name": "重大疾病保險金",
+        "trigger_condition": "癌症",
+        "percentage": 100,
+        "calculation_note": "符合重大疾病定義"
+      },
+      {
+        "insurance_type": "住院日額",
+        "benefit_name": "住院日額保險金",
+        "trigger_condition": "住院",
+        "days": 25,
+        "calculation_note": "一般病房25天"
+      },
+      {
+        "insurance_type": "住院日額",
+        "benefit_name": "加護病房日額保險金",
+        "trigger_condition": "加護病房",
+        "days": 5,
+        "multiplier": 2,
+        "calculation_note": "加護病房雙倍給付"
+      },
+      {
+        "insurance_type": "手術醫療",
+        "benefit_name": "住院手術保險金",
+        "trigger_condition": "手術",
+        "surgery_type": "肺葉切除術",
+        "multiplier": 5,
+        "calculation_note": "手術倍數表第5級"
+      }
+    ],
+    "exclusions": [],
+    "notes": "需病理報告、需符合癌症定義"
+  },
+  
+  "event_004": {
+    "event_id": "event_004",
+    "event_name": "輕微腦中風",
+    "event_type": "重大疾病",
+    "category": "腦血管疾病", 
+    "description": "缺血性腦中風，符合輕度失能定義，住院14天治療",
+    "severity": "中度",
+    "frequency": "中等",
+    "medical_info": {
+      "icd_10_code": "I63.9",
+      "surgery_required": false,
+      "hospitalization_days": 14,
+      "icu_days": 2,
+      "medical_expenses": 150000
+    },
+    "triggers": [
+      {
+        "insurance_type": "重大疾病險",
+        "benefit_name": "腦中風(輕度)保險金",
+        "trigger_condition": "輕度腦中風",
+        "percentage": 20,
+        "calculation_note": "輕度給付20%保額"
+      },
+      {
+        "insurance_type": "住院日額",
+        "benefit_name": "住院日額保險金",
+        "trigger_condition": "住院",
+        "days": 12,
+        "calculation_note": "一般病房12天"
+      },
+      {
+        "insurance_type": "住院日額",
+        "benefit_name": "加護病房日額保險金",
+        "trigger_condition": "加護病房",
+        "days": 2,
+        "multiplier": 2,
+        "calculation_note": "加護病房雙倍給付"
+      }
+    ],
+    "exclusions": [],
+    "notes": "需符合腦中風後遺症定義"
+  },
+  
+  "event_005": {
+    "event_id": "event_005",
+    "event_name": "職業傷害導致完全失能",
+    "event_type": "意外傷害",
+    "category": "失能",
+    "description": "工地意外導致脊椎損傷，造成下半身癱瘓，完全喪失工作能力",
+    "severity": "極重度",
+    "frequency": "罕見",
+    "medical_info": {
+      "icd_10_code": "S14.1",
+      "surgery_required": true,
+      "hospitalization_days": 60,
+      "icu_days": 10,
+      "medical_expenses": 800000,
+      "disability_level": 1
+    },
+    "triggers": [
+      {
+        "insurance_type": "意外傷害",
+        "benefit_name": "意外完全失能保險金",
+        "trigger_condition": "第一級失能",
+        "percentage": 100,
+        "calculation_note": "完全失能100%給付"
+      },
+      {
+        "insurance_type": "長期照顧險",
+        "benefit_name": "長期照顧保險金",
+        "trigger_condition": "符合長照狀態",
+        "payment_type": "定期給付",
+        "percentage": 2,
+        "calculation_note": "每月給付保額2%"
+      },
+      {
+        "insurance_type": "住院日額",
+        "benefit_name": "住院日額保險金",
+        "trigger_condition": "住院",
+        "days": 50,
+        "calculation_note": "一般病房50天"
+      },
+      {
+        "insurance_type": "住院日額",
+        "benefit_name": "加護病房日額保險金",
+        "trigger_condition": "加護病房",
+        "days": 10,
+        "multiplier": 2,
+        "calculation_note": "加護病房雙倍給付"
+      }
+    ],
+    "exclusions": [],
+    "notes": "需職業傷害證明、失能診斷證明"
+  },
+
+  "event_006": {
+    "event_id": "event_006",
+    "event_name": "乳癌初期發現與治療",
+    "event_type": "重大疾病",
+    "category": "癌症",
+    "description": "乳房攝影發現早期乳癌，進行部分乳房切除術，住院3天",
+    "severity": "輕度",
+    "frequency": "常見",
+    "medical_info": {
+      "icd_10_code": "C50.9",
+      "surgery_required": true,
+      "hospitalization_days": 3,
+      "icu_days": 0,
+      "medical_expenses": 120000
+    },
+    "triggers": [
+      {
+        "insurance_type": "癌症醫療",
+        "benefit_name": "癌症(初期)保險金",
+        "trigger_condition": "初期癌症",
+        "percentage": 10,
+        "calculation_note": "初期癌症給付10%保額"
+      },
+      {
+        "insurance_type": "重大疾病險",
+        "benefit_name": "重大疾病(輕度)保險金",
+        "trigger_condition": "輕度癌症",
+        "percentage": 20,
+        "calculation_note": "輕度重大疾病給付20%保額"
+      },
+      {
+        "insurance_type": "住院日額",
+        "benefit_name": "住院日額保險金",
+        "trigger_condition": "住院",
+        "days": 3,
+        "calculation_note": "日額 × 住院天數"
+      },
+      {
+        "insurance_type": "手術醫療",
+        "benefit_name": "住院手術保險金",
+        "trigger_condition": "手術",
+        "surgery_type": "乳房部分切除術",
+        "multiplier": 3,
+        "calculation_note": "手術倍數表第3級"
+      },
+      {
+        "insurance_type": "特定醫療",
+        "benefit_name": "女性疾病保險金",
+        "trigger_condition": "女性特定疾病",
+        "amount": 50000,
+        "calculation_note": "女性疾病固定給付"
+      }
+    ],
+    "exclusions": [],
+    "notes": "需病理切片報告確診"
+  },
+
+  "event_007": {
+    "event_id": "event_007",
+    "event_name": "急性心肌梗塞搶救",
+    "event_type": "重大疾病",
+    "category": "心血管疾病",
+    "description": "突發心肌梗塞送急診，進行心導管手術，加護病房5天，一般病房10天",
+    "severity": "重度",
+    "frequency": "中等",
+    "medical_info": {
+      "icd_10_code": "I21.9",
+      "surgery_required": true,
+      "hospitalization_days": 15,
+      "icu_days": 5,
+      "medical_expenses": 300000
+    },
+    "triggers": [
+      {
+        "insurance_type": "重大疾病險",
+        "benefit_name": "急性心肌梗塞保險金",
+        "trigger_condition": "心肌梗塞",
+        "percentage": 100,
+        "calculation_note": "符合重大疾病定義100%給付"
+      },
+      {
+        "insurance_type": "住院日額",
+        "benefit_name": "住院日額保險金",
+        "trigger_condition": "住院",
+        "days": 10,
+        "calculation_note": "一般病房10天"
+      },
+      {
+        "insurance_type": "住院日額",
+        "benefit_name": "加護病房日額保險金",
+        "trigger_condition": "加護病房",
+        "days": 5,
+        "multiplier": 2,
+        "calculation_note": "加護病房雙倍給付"
+      },
+      {
+        "insurance_type": "手術醫療",
+        "benefit_name": "住院手術保險金",
+        "trigger_condition": "手術",
+        "surgery_type": "心導管手術",
+        "multiplier": 4,
+        "calculation_note": "心導管手術第4級"
+      },
+      {
+        "insurance_type": "實支實付",
+        "benefit_name": "住院醫療費用保險金",
+        "trigger_condition": "住院醫療",
+        "actual_expense": 300000,
+        "calculation_note": "實際醫療費用，上限視保額"
+      }
+    ],
+    "exclusions": [],
+    "notes": "需心電圖、心臟酵素檢查確診"
+  },
+
+  "event_008": {
+    "event_id": "event_008",
+    "event_name": "機車滑倒手腕骨折",
+    "event_type": "意外傷害",
+    "category": "骨折",
+    "description": "騎機車轉彎滑倒，手腕骨折需開刀固定，門診手術治療",
+    "severity": "輕度",
+    "frequency": "常見",
+    "medical_info": {
+      "icd_10_code": "S62.1",
+      "surgery_required": true,
+      "hospitalization_days": 0,
+      "icu_days": 0,
+      "medical_expenses": 25000,
+      "outpatient_surgery": true
+    },
+    "triggers": [
+      {
+        "insurance_type": "意外傷害",
+        "benefit_name": "意外骨折保險金",
+        "trigger_condition": "骨折",
+        "body_part": "手腕",
+        "amount": 15000,
+        "calculation_note": "手腕骨折固定給付"
+      },
+      {
+        "insurance_type": "意外傷害",
+        "benefit_name": "意外傷害醫療保險金",
+        "trigger_condition": "意外醫療",
+        "actual_expense": 25000,
+        "calculation_note": "實支實付，上限視保額"
+      },
+      {
+        "insurance_type": "手術醫療",
+        "benefit_name": "門診手術保險金",
+        "trigger_condition": "門診手術",
+        "surgery_type": "骨折復位內固定術",
+        "multiplier": 1,
+        "calculation_note": "門診手術給付"
+      }
+    ],
+    "exclusions": [],
+    "notes": "門診手術不適用住院日額"
+  },
+
+  "event_009": {
+    "event_id": "event_009",
+    "event_name": "糖尿病併發症住院",
+    "event_type": "疾病住院",
+    "category": "內分泌疾病",
+    "description": "糖尿病血糖控制不良導致酮酸中毒，住院治療7天",
+    "severity": "中度",
+    "frequency": "中等",
+    "medical_info": {
+      "icd_10_code": "E11.1",
+      "surgery_required": false,
+      "hospitalization_days": 7,
+      "icu_days": 0,
+      "medical_expenses": 45000
+    },
+    "triggers": [
+      {
+        "insurance_type": "住院日額",
+        "benefit_name": "住院日額保險金",
+        "trigger_condition": "住院",
+        "days": 7,
+        "calculation_note": "日額 × 住院天數"
+      },
+      {
+        "insurance_type": "實支實付",
+        "benefit_name": "住院醫療費用保險金",
+        "trigger_condition": "住院醫療",
+        "actual_expense": 45000,
+        "calculation_note": "實際醫療費用，上限視保額"
+      },
+      {
+        "insurance_type": "特定醫療",
+        "benefit_name": "糖尿病併發症保險金",
+        "trigger_condition": "糖尿病併發症",
+        "amount": 20000,
+        "calculation_note": "糖尿病併發症固定給付"
+      }
+    ],
+    "exclusions": [],
+    "notes": "若為既往症可能有等待期限制"
+  },
+
+  "event_010": {
+    "event_id": "event_010", 
+    "event_name": "白內障手術治療",
+    "event_type": "疾病住院",
+    "category": "眼科手術",
+    "description": "雙眼白內障影響視力，進行門診手術置換人工水晶體",
+    "severity": "輕度",
+    "frequency": "常見",
+    "medical_info": {
+      "icd_10_code": "H25.9",
+      "surgery_required": true,
+      "hospitalization_days": 0,
+      "icu_days": 0,
+      "medical_expenses": 60000,
+      "outpatient_surgery": true,
+      "bilateral": true
+    },
+    "triggers": [
+      {
+        "insurance_type": "手術醫療",
+        "benefit_name": "門診手術保險金",
+        "trigger_condition": "門診手術",
+        "surgery_type": "白內障摘除術",
+        "multiplier": 1,
+        "times": 2,
+        "calculation_note": "雙眼手術，每眼給付一次"
+      },
+      {
+        "insurance_type": "特定醫療",
+        "benefit_name": "眼科疾病保險金",
+        "trigger_condition": "眼科手術",
+        "amount": 10000,
+        "times": 2,
+        "calculation_note": "眼科疾病每眼固定給付"
+      }
+    ],
+    "exclusions": [],
+    "notes": "門診手術不適用住院相關給付"
+  }
+}
